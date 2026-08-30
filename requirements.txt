@@ -1,0 +1,7 @@
+langchain
+langchain-chroma
+langchain-community
+pypdf
+gradio
+python-dotenv
+sentence-transformers

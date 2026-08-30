@@ -1,0 +1,10 @@
+# Environments
+venv/
+env/
+.env
+hf_cache/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
