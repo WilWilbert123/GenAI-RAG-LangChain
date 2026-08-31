@@ -1,71 +1,68 @@
-# GenAI-RAG-LangChain
+# GenAI RAG QA Bot
 
-This repository contains a Retrieval-Augmented Generation (RAG) application built using LangChain, Gradio, and Chroma. The application allows users to upload PDF documents and ask questions about the content of those documents in real time.
+This project is a Retrieval-Augmented Generation (RAG) application built using LangChain, Gradio, and ChromaDB. It functions as a document QA bot that allows users to upload PDF files and ask questions about their content using a custom IBM WatsonX Large Language Model integration.
 
-## Project Overview
-
-This project was built as part of the "Generative AI Applications with RAG and LangChain" course. It serves as an AI assistant for processing and extracting insights from documents to optimize research productivity and decision-making.
+![QA Bot Interface](QA_bot.png)
 
 ## Prerequisites
 
-Before running this application, ensure you have the following installed:
-- Python 3.9 or higher
-- pip (Python package installer)
+Before setting up the project, ensure you have the following installed on your machine:
+* Python 3.9
+* Git
 
-## Step-by-Step Installation Guide
+## Step-by-Step Setup Guide
 
 ### Step 1: Clone the Repository
-Clone this repository to your local machine using git.
+Open your terminal and clone the repository to your local machine.
 ```bash
 git clone https://github.com/WilWilbert123/GenAI-RAG-LangChain.git
 cd GenAI-RAG-LangChain
 ```
 
-### Step 2: Create a Virtual Environment
-It is highly recommended to use a virtual environment to manage project dependencies.
+### Step 2: Set up a Virtual Environment
+It is highly recommended to isolate the project dependencies using a virtual environment.
 ```bash
-python3 -m venv venv
+python -m venv venv
 source venv/bin/activate
 ```
 
-### Step 3: Install Dependencies
-Install all required Python packages using the provided requirements file.
+### Step 3: Install Required Dependencies
+Install all the necessary Python packages using the provided requirements file.
 ```bash
 pip install -r requirements.txt
 ```
 
-### Step 4: Environment Variables
-Create a `.env` file in the root directory if you plan to use IBM Watsonx credentials. 
+### Step 4: Configure Environment Variables
+Create a file named `.env` in the root directory of the project. This file is required to authenticate with the IBM WatsonX API. Add the following lines to the file, replacing the placeholder values with your actual credentials:
 ```env
 WATSONX_API_KEY=your_api_key_here
 WATSONX_PROJECT_ID=your_project_id_here
 WATSONX_URL=your_url_here
 ```
-Note: If these credentials are not provided, the application will automatically fall back to using local HuggingFace embeddings (`all-MiniLM-L6-v2`) and a mock LLM for testing purposes.
 
-### Step 5: Run the Application
-Start the Gradio web server.
+### Step 5: Start the Application
+Run the main application script to start the Gradio web server.
 ```bash
-python3 app.py
+python app.py
 ```
 
 ### Step 6: Access the Web Interface
-Once the server is running, open your web browser and navigate to the provided local URL (typically http://127.0.0.1:7860). 
+Once the server starts, it will display a local URL in the terminal (typically http://127.0.0.1:7860 or similar). Open this link in your web browser.
 
-## How to Use the Application
+## Usage Guide
 
-1. Open the application in your web browser.
-2. Click on the "Upload PDF Document" component to upload a research document or certificate.
-3. Wait for the "Status" box to confirm that the document was processed successfully.
-4. Type your question in the "Ask a Question about the Document" text box.
-5. Click the "Ask QA Bot" button.
-6. The bot's answer will appear in the "QA Bot Answer" box below.
+1. **Upload Document**: Click on the file upload area labeled "Select PDF File" and choose a PDF from your computer.
+2. **Analyze**: Click the "Analyze Document" button. The system will extract the text, chunk it, and store the embeddings in a local Chroma vector database.
+3. **Wait for Status**: Look at the Status box to confirm that the document was processed successfully.
+4. **Ask Questions**: Type your query in the "Your Question" box.
+5. **Get Answer**: Click the "Get Answer" button. The system will retrieve the most relevant chunks of text from your document and use the IBM WatsonX LLM to generate an accurate summary or answer.
 
-## Architecture and Tools Used
+## Architecture and Tools
 
-- LangChain: Core framework for orchestrating the RAG pipeline.
-- PyPDFLoader: Extracts text from the uploaded PDF files.
-- RecursiveCharacterTextSplitter: Splits the extracted text into manageable chunks.
-- HuggingFaceEmbeddings: Converts text chunks into vector representations (fallback for Watsonx).
-- Chroma: Vector database for storing and retrieving the embeddings.
-- Gradio: Framework used to build the interactive web user interface.
+* **LangChain**: Orchestrates the RAG pipeline.
+* **PyPDFLoader**: Extracts text from the uploaded PDF documents.
+* **RecursiveCharacterTextSplitter**: Splits the document into optimized chunks for embedding.
+* **Chroma**: Local vector database for storing and querying text embeddings.
+* **HuggingFaceEmbeddings**: Generates the vector representations of the text.
+* **IBM WatsonX REST API**: Custom integration for LLM inference (using Llama 3 70B).
+* **Gradio**: Provides the minimalist, dark-mode web user interface.
