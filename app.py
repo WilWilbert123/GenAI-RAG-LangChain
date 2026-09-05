@@ -1,6 +1,7 @@
 import os
 os.environ["HF_HOME"] = os.path.abspath("./hf_cache")
 import gradio as gr
+from fastapi import FastAPI
 from dotenv import load_dotenv
 
 # Langchain imports
@@ -432,6 +433,10 @@ with gr.Blocks(theme=custom_theme, title="Document QA Bot", css=css) as demo:
         </div>
         """
     )
+
+# Vercel requires an ASGI app to be exposed as "app" in app.py
+app = FastAPI()
+app = gr.mount_gradio_app(app, demo, path="/")
 
 if __name__ == "__main__":
     demo.launch(share=True)

@@ -1,14 +1,16 @@
 # GenAI RAG QA Bot
 
-This project is a Retrieval-Augmented Generation (RAG) application built using LangChain, Gradio, and ChromaDB. It functions as a document QA bot that allows users to upload PDF files and ask questions about their content using a custom IBM WatsonX Large Language Model integration.
+This project is a multimodal Retrieval-Augmented Generation (RAG) application built using LangChain, Gradio, and ChromaDB. It functions as a document QA bot that allows users to upload documents (PDF, DOCX, TXT), images (PNG, JPG), and media (MP4, MP3) and ask questions about their content using a custom IBM WatsonX Large Language Model integration.
 
 ![QA Bot Interface](QA_bot.png)
 
 ## Prerequisites
 
 Before setting up the project, ensure you have the following installed on your machine:
-* Python 3.9
+* Python 3.9+
 * Git
+* `ffmpeg` (Required for Whisper audio/video transcription)
+* `tesseract` (Required for OCR image scanning)
 
 ## Step-by-Step Setup Guide
 
@@ -51,11 +53,27 @@ Once the server starts, it will display a local URL in the terminal (typically h
 
 ## Usage Guide
 
-1. **Upload Document**: Click on the file upload area labeled "Select PDF File" and choose a PDF from your computer.
-2. **Analyze**: Click the "Analyze Document" button. The system will extract the text, chunk it, and store the embeddings in a local Chroma vector database.
+1. **Upload Document**: Drag and drop a file into the upload area. It supports Documents (PDF, DOCX, CSV), Images (PNG, JPG), and Media (MP4, MP3).
+2. **Auto-Analyze**: The system will automatically detect the file type, extract the text/audio/images using OCR and Whisper, chunk it, and store the embeddings in a local Chroma vector database.
 3. **Wait for Status**: Look at the Status box to confirm that the document was processed successfully.
-4. **Ask Questions**: Type your query in the "Your Question" box.
-5. **Get Answer**: Click the "Get Answer" button. The system will retrieve the most relevant chunks of text from your document and use the IBM WatsonX LLM to generate an accurate summary or answer.
+4. **Ask Questions**: Type your query in the "Your Question" box, or click on one of the Examples.
+5. **Get Answer**: The system will instantly retrieve the most relevant chunks of text from your document and use the IBM WatsonX LLM to generate an accurate summary or answer in real-time.
+
+## Deploying on Vercel
+
+If you want to deploy this application to Vercel, the necessary configurations (`vercel.json` and `api/index.py`) have already been included in this repository. 
+
+> ⚠️ **Warning:** Vercel's Free Tier has strict size limits (250MB) and timeouts (10 seconds) for Serverless Functions. Heavy libraries like `torch` and processing times for tools like `whisper` might cause deployment failures or timeouts. For production Gradio apps, **Hugging Face Spaces** or **Render** are recommended.
+
+### Step-by-Step Vercel Guide:
+1. **Push your code to GitHub:** Ensure your latest code is pushed to your GitHub repository.
+2. **Import to Vercel:** Go to your Vercel Dashboard, click **Add New** -> **Project**, and import your GitHub repository.
+3. **Configure Environment Variables:** In the Vercel setup screen, open the "Environment Variables" section and add your IBM WatsonX credentials:
+   * `WATSONX_API_KEY`
+   * `WATSONX_PROJECT_ID`
+   * `WATSONX_URL`
+4. **Build Settings:** Vercel will automatically detect the Python environment. Leave the Build Command and Install Command as their defaults (Vercel will run `pip install -r requirements.txt` automatically).
+5. **Deploy:** Click **Deploy**. Vercel will build your environment and route traffic to the Gradio app through FastAPI via the `api/index.py` file!
 
 ## Architecture and Tools
 
