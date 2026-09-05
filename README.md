@@ -59,11 +59,28 @@ Once the server starts, it will display a local URL in the terminal (typically h
 4. **Ask Questions**: Type your query in the "Your Question" box, or click on one of the Examples.
 5. **Get Answer**: The system will instantly retrieve the most relevant chunks of text from your document and use the IBM WatsonX LLM to generate an accurate summary or answer in real-time.
 
-## Deploying on Vercel
+## Deploying on Hugging Face Spaces (Recommended)
 
-If you want to deploy this application to Vercel, the necessary configurations (`vercel.json` and `api/index.py`) have already been included in this repository. 
+Hugging Face Spaces is specifically designed for hosting heavy AI applications (like this Gradio app) and handles massive machine learning libraries like `torch` perfectly for free.
 
-> ⚠️ **Warning:** Vercel's Free Tier has strict size limits (250MB) and timeouts (10 seconds) for Serverless Functions. Heavy libraries like `torch` and processing times for tools like `whisper` might cause deployment failures or timeouts. For production Gradio apps, **Hugging Face Spaces** or **Render** are recommended.
+1. **Create an Account:** Go to [Hugging Face](https://huggingface.co/) and create a free account.
+2. **Create a New Space:** Click on your profile icon -> **New Space**.
+3. **Configure Space:** 
+   * Name your space.
+   * Select **Gradio** as the Space SDK.
+   * Choose **Public** or **Private**.
+4. **Link GitHub:** In your newly created Space, follow the instructions to either clone it locally and push your code, or connect your GitHub repository directly. (Hugging Face will automatically read the `packages.txt` and `requirements.txt` to build the app).
+5. **Set Environment Variables:** Go to your Space's **Settings** tab -> **Variables and secrets** and add your WatsonX keys as **Secrets**:
+   * `WATSONX_API_KEY`
+   * `WATSONX_PROJECT_ID`
+   * `WATSONX_URL`
+6. **Watch it Build:** Once pushed and configured, Hugging Face will build and launch your application!
+
+## Deploying on Vercel (Not Recommended)
+
+If you still want to try to deploy this application to Vercel, the necessary configurations (`vercel.json` and `api/index.py`) have already been included in this repository. 
+
+> 🛑 **Warning:** Vercel's Free Tier has strict size limits (250MB) and timeouts (10 seconds) for Serverless Functions. Heavy libraries like `torch` and processing times for tools like `whisper` will cause deployment failures or timeouts. Vercel is **not recommended** for this app.
 
 ### Step-by-Step Vercel Guide:
 1. **Push your code to GitHub:** Ensure your latest code is pushed to your GitHub repository.
